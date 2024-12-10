@@ -1,0 +1,46 @@
+.input {
+    border-radius: 8px;
+    padding: 10px 8px;
+    border: 1px solid #E4E4E7;
+    outline: 0;
+    transition-duration: .3s;
+    font-size: 16px;
+}
+.input.danger {
+    border: 1px solid #FF4D4F;
+}
+
+.label {
+    transition-duration: .3s;
+    margin-bottom: 5px;
+}
+
+.label.danger {
+    color: #FF4D4F;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+.inputBlock {
+    display: flex;
+    flex-direction: column;
+}
+.disabled {
+    opacity: .5;
+}
+
+
+.input.focused {
+    border: 1px solid #006FEE;
+}
+.label.focused {
+    color: #006FEE;
+}
+
+.input-container {
+    display: flex;
+}
