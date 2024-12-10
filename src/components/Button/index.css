@@ -42,15 +42,3 @@
     opacity: .5;
     pointer-events: none;
 }
-
-.button-container {
-    max-width: 1200px;
-    display: flex;
-    flex-direction: column;
-    gap: 35px;
-}
-.button-block {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}

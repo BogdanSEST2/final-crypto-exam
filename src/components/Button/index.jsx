@@ -15,5 +15,8 @@ export default function Button(props) {
     } = props;
     const handleClick = typeof onClick === 'function' ? onClick : () => {};
     const classNameButton = disabled ? `button ${variant} ${size} ${type} disabled` : `button ${variant} ${size} ${type}`
-    return <button onClick={handleClick} className={classNameButton}>{children}</button>
+    return <button 
+        onClick={handleClick} 
+        className={classNameButton}
+    >{children}</button>
 }

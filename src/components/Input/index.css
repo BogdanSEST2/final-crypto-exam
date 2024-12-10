@@ -40,7 +40,3 @@
 .label.focused {
     color: #006FEE;
 }
-
-.input-container {
-    display: flex;
-}
