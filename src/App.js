@@ -94,7 +94,7 @@ function App() {
                           <Heading level={5}>Percent Change 24H: </Heading>
                           <span
                             className={
-                              parseFloat(crypto.percent_change_24h) === 0 ? 'zero' : (crypto.percent_change_24h > 0 ? 'positive' : 'negative')
+                              parseFloat(crypto.percent_change_24h) === 0 ? 'zero' : (parseFloat(crypto.percent_change_24h) > 0 ? 'positive' : 'negative')
                             }>
                             {crypto.percent_change_24h}%
                           </span>
