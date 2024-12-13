@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Typography from '../Typography';
 import './index.css';
 
 
@@ -18,7 +19,16 @@ export default function Tooltip(props) {
     } = props;
 
     return <div className={`tooltip-block ${position}`} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-        <p className={`tooltip-text ${position} ${showToolTip ? 'show' : 'hide'}`}>{tooltipText}</p>
-        {children}
+        <div 
+            className={
+                `tooltip-text 
+                    ${position} 
+                    ${showToolTip ? 'show' : 'hide'}
+                `}>
+                    <Typography size='sm'>{tooltipText}</Typography>
+        </div>
+        <div>
+            {children}
+        </div>
     </div>
 }

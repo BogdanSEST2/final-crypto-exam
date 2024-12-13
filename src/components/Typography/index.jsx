@@ -3,8 +3,8 @@ import './index.css';
 
 export default function Typography(props) {
     const {size='md', children} = props;
-    return <p 
+    return <div
         className={`typography ${size}`}
         {...props}    
-    >{children}</p>
+    >{children}</div>
 }

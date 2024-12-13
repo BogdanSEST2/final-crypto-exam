@@ -4,187 +4,111 @@ import Typography from "./components/Typography";
 import Heading from "./components/Heading";
 import Tooltip from "./components/Tooltip";
 import Accordion from "./components/Accordion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './App.css';
 
 
 
 function App() {
-  const [firstname, setFirstName] = useState('');
-  const [lastname, setLastName] = useState('');
-  const [age, setAge] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState(''); 
-  const [showPassword, setShowPassword] = useState(false);
+  const [cryptoData, setCryptoData] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [currentAccordionID, setCurrentAccordionID] = useState(null);
+
+  const fetchAllData = () => {
+    fetch('https://api.coinlore.net/api/tickers/')
+      .then((response) => response.json())
+      .then((data) => {
+        setCryptoData(data.data);
+      })
+      .catch((error) => console.error(`Ошибка при загрузке данных: ${error}`));
+  };
+
+  useEffect(() => {
+    fetchAllData();
+  }, []);
+
+  const handleUpdate = () => {
+    fetchAllData();
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const filteredCryptoData = cryptoData.filter((crypto) =>
+    crypto.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+    crypto.symbol.includes(searchValue.toUpperCase().trim())
+  );
 
   return (
     <div className="App">
-      <h1>Ui-Lib</h1>
-      <div className="main-hw-8-container">
-        <Button variant='bordered' size='lg' disabled>lg, primary</Button>
-        <Button variant='bordered' size='md'>md, primary</Button>
-        <Button onClick variant='bordered' size='sm'>sm, primary</Button>  
-        <Button onClick variant='bordered' size='lg'>Hover</Button>  
+      <div className="main-final-exam-container">
 
-        <Button variant='primary' size='lg' disabled>lg, primary</Button>
-        <Button variant='primary' size='md'>md, primary</Button>
-        <Button variant='primary' size='sm'>sm, primary</Button>  
-        <Button onClick variant='primary' size='lg'>Hover</Button>   
-
-        <Input 
-          label="Firstname" 
-          placeholder="Enter your firstname" 
-          value={firstname} 
-          onChange={(newValue) => setFirstName(newValue)} 
-          danger
-        />
-        <Input 
-          label="Lastname" 
-          placeholder="Enter your lastname" 
-          value={lastname} 
-          onChange={(newValue) => setLastName(newValue)} 
-        />
-        <Input
-          label='Age'
-          placeholder='age'
-          value={age}
-          onChange={(newValue) => {
-            if (Number(newValue) >= 1) {
-              setAge(newValue)
-            }
-          }}
-          type='number'
-        />
-        <Input 
-          label="Email" 
-          placeholder="Enter your email" 
-          type="email" 
-          value={email} 
-          onChange={(newValue) => setEmail(newValue)} 
-          disabled
-        />
-        <Input 
-          label="Password" 
-          placeholder="Enter your password" 
-          type="password" 
-          value={password} 
-          onChange={(newValue) => setPassword(newValue)} 
-        />
-
-        <div>
-          <h2>Input values:</h2>
-          <ul>
-            <li>Firstname: {firstname}</li>
-            <li>Firstname: {lastname}</li>
-            <li>Email: {email}</li>
-            <li>Password: {showPassword ? password : '*'.repeat(password.length)}</li>
-            <li>Age: {age}</li>
-          </ul>
+        <div className="main-final-exam-block">
+          <Heading level="1">Cryptocurrency Prices</Heading>
+          <Button onClick={handleUpdate}>Update</Button>
+          <Input placeholder="Search" onChange={handleSearchChange} />
         </div>
 
-        <Button 
-          onClick={() => setShowPassword(!showPassword)}
-          variant='primary'
-          size='sm'>
-            {showPassword ? 'Hide' : 'Show'}
-        </Button>
+        <div className="crypto-list">
+          {filteredCryptoData.length > 0 ? (
+            filteredCryptoData.map((crypto) => {
+              const threeParamsForEachCryptocurrency = [
+                { id: 1, title: 'Symbol: ', value: crypto.symbol },
+                { id: 2, title: 'Price USD: ', value: crypto.price_usd },
+                { id: 3, title: 'Price BTC: ', value: crypto.price_btc },
+              ];
 
-        <Typography size='sm'>SM. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Typography>
-        <Typography size='md'>MD. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Typography>
-        <Typography>MD. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Typography>
-        <Typography size='lg'>LG. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Typography>
+              return <div key={crypto.id || crypto.symbol} className="crypto-item">
+                  <Accordion
+                    isOpen={crypto.id === currentAccordionID}
+                    title={crypto.name}
+                    onClick={() => {
+                      setCurrentAccordionID(
+                        currentAccordionID === crypto.id ? null : crypto.id
+                      );
+                    }}>
+                    <div className="crypto-item-info">
+                      {threeParamsForEachCryptocurrency.map((param) => (
+                        <Typography key={param.id}>
+                          <span className="crypto-item-text">
+                            <Heading level={5}>{param.title}</Heading>
+                            {param.value}
+                          </span>
+                        </Typography>
+                      ))}
 
-        <Heading level='1'>H1. Heading</Heading>
-        <Heading level='2'>H2. Heading</Heading>
-        <Heading level='3'>H3. Heading</Heading>
-        <Heading level='4'>H4. Heading</Heading>
-        <Heading level='5'>H5. Heading</Heading>
-        <Heading level='6'>H6. Heading</Heading>
+                      <Typography>
+                        <span className="crypto-item-text">
+                          <Tooltip
+                            position="top"
+                            tooltipText="The market capitalization of a cryptocurrency is calculated by multiplying the number of coins in circulation by the current price.">
+                            <Heading level={5}>Market Cap USD: </Heading>
+                          </Tooltip>
+                          {crypto.market_cap_usd}
+                        </span>
+                      </Typography>
 
-        <br/>
-        <br/>
-        <br/>
+                      <Typography>
+                        <span className="crypto-item-text">
+                          <Heading level={5}>Percent Change 24H: </Heading>
+                          <span
+                            className={
+                              parseFloat(crypto.percent_change_24h) === 0 ? 'zero' : (crypto.percent_change_24h > 0 ? 'positive' : 'negative')
+                            }>
+                            {crypto.percent_change_24h}%
+                          </span>
+                        </span>
+                      </Typography>
+                    </div>
+                  </Accordion>
+                </div>
+            })) : (
+            <Typography>Loading data...</Typography>
+          )}
+        </div>
 
-        <Tooltip tooltipText='Hint' position='left'>
-          <Typography size='sm'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-          <Typography size='lg'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-          <Typography size='lg'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-          <Typography size='lg'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-          <Typography size='lg'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-          <Typography size='lg'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-          <Typography size='md'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-          <Typography size='md'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-          <Typography size='md'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-          <Typography size='sm'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </Typography>
-        </Tooltip>
-
-        <br/>
-        <br/>
-        <br/>
-
-        <Tooltip tooltipText='Hint' position='top'>
-          fwefwerfwref
-        </Tooltip>
-
-        <br/>
-        <br/>
-        <br/>
-        
-        <Tooltip tooltipText='Hint' position='bottom'>
-          fwefwerfwref
-        </Tooltip>
-
-        <br/>
-        <br/>
-        <br/>
-
-        <Tooltip tooltipText='Hint' position='left'>
-          fwefwerfwref
-        </Tooltip>
-
-        <br/>
-        <br/>
-        <br/>
-
-        <Tooltip tooltipText='Hint' position='right'>
-          fwefwerfwref
-        </Tooltip>
-        
-
-        <Accordion defaultOpen={false} title='Accordion Expanded'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Accordion>
-        <Accordion defaultOpen={false} title='Accordion Expanded'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Accordion>
-        <Accordion defaultOpen={false} title='Accordion Expanded'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Accordion>
-        <Accordion defaultOpen={true} title='Accordion Expanded'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Accordion>
-        <Accordion defaultOpen={true} title='Accordion Expanded'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Accordion>
-        <Accordion defaultOpen={true} title='Accordion Expanded'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Accordion>
       </div>
-
     </div>
   );
 }

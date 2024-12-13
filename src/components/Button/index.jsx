@@ -9,14 +9,11 @@ export default function Button(props) {
         variant='bordered', 
         disabled, 
         type='button',
-        onClick=(() => {
-            console.log('Кнопка нажата');
-        })
+        onClick
     } = props;
-    const handleClick = typeof onClick === 'function' ? onClick : () => {};
     const classNameButton = disabled ? `button ${variant} ${size} ${type} disabled` : `button ${variant} ${size} ${type}`
     return <button 
-        onClick={handleClick} 
+        onClick={onClick} 
         className={classNameButton}
     >{children}</button>
 }

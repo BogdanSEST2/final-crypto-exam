@@ -33,10 +33,10 @@ export default function Input(props) {
         `;
 
     const handleChange = (e) => {
-        const newValue = e.target.value;
-        if (onChange) onChange(newValue);
-        if (!value) setInputValue(newValue);
+        if (onChange) onChange(e); 
+        if (!value) setInputValue(e.target.value);
     };
+        
 
     return (
         <div className="inputBlock">

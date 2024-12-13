@@ -27,7 +27,11 @@
     background-color: #006FEE;
     color: white;
 }
-
+.bordered:active {
+    transition-duration: .1s;
+    background-color: #509df5;
+    border-color: #509df5;
+}
 .primary {
     border: 1px solid #006FEE;
     background-color: transparent;

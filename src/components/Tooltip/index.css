@@ -1,6 +1,7 @@
 .tooltip-block {
     position: relative;
     display: inline-block;
+    box-sizing: border-box;
 }
 
 .tooltip-text {
@@ -8,15 +9,21 @@
     background-color: #006FEE;
     color: white;
     font-size: 14px;
-    padding: 8px 12px;
-    border-radius: 6px;
+    padding: 8px 4px;
+    border-radius: 12px;
     white-space: nowrap;
     z-index: 1000;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
     transform: scale(0.9);
-    
+    width: 350px;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word; 
+    white-space: normal;
+    line-height: normal;
+    text-align: center;
 }
 
 .tooltip-text.show {
@@ -33,7 +40,7 @@
 }
 
 .tooltip-text.top.show {
-    transform: translateX(-50%) translateY(10px) scale(1);
+    transform: translateX(-50%) translateY(0) scale(1);
 }
 
 
@@ -44,7 +51,7 @@
 }
 
 .tooltip-text.bottom.show {
-    transform: translateX(-50%) translateY(-10px) scale(1);
+    transform: translateX(-50%) translateY(0) scale(1);
 }
 
 

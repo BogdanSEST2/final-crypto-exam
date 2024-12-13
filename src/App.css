@@ -2,7 +2,43 @@ body {
     padding: 100px;
 }
 
-.main-hw-8-container {
+.main-final-exam-container {
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.main-final-exam-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 25px;
+}
+.crypto-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.crypto-item {
+    align-self: stretch;
+}
+
+.crypto-item-info {
+    padding-left: 30px;
+}
+.crypto-item-text {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.positive {
+    color: green;
+}
+.negative {
+    color: red;
+}
+.zero {
+    color: rgb(56, 55, 55);
 }
