@@ -15,6 +15,7 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_FINAL_PROJECT_1_C7786 }}
+          firebaseServiceAccount: ${{
+            secrets.FIREBASE_SERVICE_ACCOUNT_FINAL_EXAM_CRYPTO_PROJEC_F94E0 }}
           channelId: live
-          projectId: final-project-1-c7786
+          projectId: final-exam-crypto-projec-f94e0
